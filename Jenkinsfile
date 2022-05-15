@@ -8,7 +8,7 @@ pipeline {
         stage('CI') {
             steps {
                 // Build the Dockerfile
-                sh "docker build . -t abdurrhmansm/node_app_redis_rds:latest"
+                sh "docker build . -t abdurrhmansm/node_app_rds:latest"
                 // Push the image to our account
 
                 //first login to docker
@@ -19,7 +19,7 @@ pipeline {
                 }
 
                 //now, push the image
-                sh "docker push abdurrhmansm/node_app_redis_rds:latest"
+                sh "docker push abdurrhmansm/node_app_rds:latest"
                 
             }
         }
@@ -27,7 +27,7 @@ pipeline {
             steps {
             withCredentials([usernamePassword(credentialsId: 'RDS_CRED', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                 //Run the docker image with 
-                sh "docker run -d -it -p 3000:3000 --env RDS_HOSTNAME=${rds_hostname} --env RDS_USERNAME=${USERNAME} --env RDS_PASSWORD=${PASSWORD} --env REDIS_HOSTNAME=${redis_hostname}  abdurrhmansm/node_app_redis_rds:latest"
+                sh "docker run -d -it -p 3000:3000 --env RDS_HOSTNAME=${rds_hostname} --env RDS_USERNAME=${USERNAME} --env RDS_PASSWORD=${PASSWORD} --env REDIS_HOSTNAME=${redis_hostname}  abdurrhmansm/node_app_rds:latest"
             }
                 
             }
