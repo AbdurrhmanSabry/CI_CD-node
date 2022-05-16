@@ -1,8 +1,8 @@
 pipeline {
-    agent {label 'ec2_private_slave'}
+    agent {label 'ec2-slave'}
     environment {
-        rds_hostname = 'terraform-20220516200042997200000002.c1vpvridguyo.us-east-1.rds.amazonaws.com'
-        redis_hostname    = 'redis-cluster.nvp9dd.0001.use1.cache.amazonaws.com'
+        rds_hostname = 'terraform-20220516183947561300000002.crw6baw4vjmp.us-east-1.rds.amazonaws.com'
+        redis_hostname    = 'redis-cluster.s0tb98.0001.use1.cache.amazonaws.com'
         }
     stages {
         stage('CI') {
@@ -14,12 +14,12 @@ pipeline {
                 //first login to docker
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
 
-                    // sh "docker login -u ${USERNAME} -p ${PASSWORD}"
+                    sh "docker login -u ${USERNAME} -p ${PASSWORD}"
 
                 }
 
                 //now, push the image
-                // sh "docker push abdurrhmansm/node_app_rds:latest"
+                sh "docker push abdurrhmansm/node_app_rds:latest"
                 
             }
         }
