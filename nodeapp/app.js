@@ -32,7 +32,10 @@ const client = redis.createClient({
 client.on('error', err => {
     console.log('Error ' + err);
 });
-
+app.get('/', (req,res)=>{
+    res.send('Hello From ITI intake 42')
+  
+})
 app.get('/redis', (req, res) => {
 
   client.set('foo','bar', (error, rep)=> {                
