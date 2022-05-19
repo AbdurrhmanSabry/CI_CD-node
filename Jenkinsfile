@@ -1,7 +1,7 @@
 pipeline {
     agent {label 'ec2-slave'}
     environment {
-        rds_hostname = 'terraform-20220519082743464500000002.crw6baw4vjmp.us-east-1.rds.amazonaws.com'
+        rds_hostname = 'terraform-20220519163233489500000001.crw6baw4vjmp.us-east-1.rds.amazonaws.com'
         redis_hostname    = 'redis-cluster.s0tb98.0001.use1.cache.amazonaws.com'
         }
     stages {
