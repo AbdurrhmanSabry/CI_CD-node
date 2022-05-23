@@ -29,8 +29,8 @@ pipeline {
         }
         stage('CD') {
             environment {
-                rds_hostname = '$(aws ssm get-parameter --name rds_endpoint --with-decryption --output text --query "Parameter.Value")'
-                redis_hostname    = '$(aws ssm get-parameter --name elasticahe-address --output text --with-decryption --query "Parameter.Value" )'
+                rds_hostname = '$(aws ssm get-parameter --name /dev/rds-database/address --with-decryption --output text --query "Parameter.Value")'
+                redis_hostname    = '$(aws ssm get-parameter --name /dev/elasticahe-redis/address --output text --with-decryption --query "Parameter.Value" )'
                 rds_username = '$(aws ssm get-parameter  --name username_rds  --output text  --query "Parameter.Value")'
                 rds_password = '$(aws ssm get-parameter --name password_rds --with-decryption --output text --query "Parameter.Value")'
             }
