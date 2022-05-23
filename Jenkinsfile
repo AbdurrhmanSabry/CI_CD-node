@@ -34,16 +34,11 @@ pipeline {
         stage('CD') {
             steps {
             withAWS(credentials:'AWS_KEYS', region: 'us-east-1'){
-                // sh 'export rds_address=$(aws ssm get-parameter --name "rds_endpoint" --query "Parameter.Value")'
-                // sh 'export redis_address=$(aws ssm get-parameter --name "elasticahe-address" --query "Parameter.Value")'
-                // sh 'echo $rds_address'
-                // sh 'echo $redis_address'
-            
+                //Run the docker image with 
              sh 'docker run -d -it -p 3000:3000 --env RDS_HOSTNAME=$(aws ssm get-parameter --name "rds_endpoint" --with-decryption --output text --query "Parameter.Value") --env RDS_USERNAME="admin" --env RDS_PASSWORD="admin123456789" --env REDIS_HOSTNAME=$(aws ssm get-parameter --name "elasticahe-address" --output text --with-decryption --query "Parameter.Value") --env RDS_PORT=3306 abdurrhmansm/node_app_rds:latest'
-            // withCredentials([usernamePassword(credentialsId: 'RDS_CRED', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
-            //     //Run the docker image with 
-            //     sh 'docker run -d -it -p 3000:3000 --env RDS_HOSTNAME=$(aws ssm get-parameter --name "rds_endpoint" --query "Parameter.Value") --env RDS_USERNAME=${USERNAME} --env RDS_PASSWORD=${PASSWORD} --env REDIS_HOSTNAME=$(aws ssm get-parameter --name "elasticahe-address" --query "Parameter.Value") --env RDS_PORT=3306 abdurrhmansm/node_app_rds:latest'
-            // }
+            
+            }
+            
             }
             post {
                 success {
@@ -52,7 +47,6 @@ pipeline {
                failure {
                    slackSend(channel: 'dev-ops', color: 'danger', message: "CD failure - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
                }
-            }
             }
         }
     }
