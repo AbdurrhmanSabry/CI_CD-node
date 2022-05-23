@@ -34,15 +34,16 @@ pipeline {
         stage('CD') {
             steps {
             withAWS(credentials:'AWS_KEYS', region: 'us-east-1'){
-                sh 'export rds_address=$(aws ssm get-parameter --name "rds_endpoint" --query "Parameter.Value")'
-                sh 'export redis_address=$(aws ssm get-parameter --name "elasticahe-address" --query "Parameter.Value")'
-                sh 'echo $rds_address'
-                sh 'echo $redis_address'
-            }
+                // sh 'export rds_address=$(aws ssm get-parameter --name "rds_endpoint" --query "Parameter.Value")'
+                // sh 'export redis_address=$(aws ssm get-parameter --name "elasticahe-address" --query "Parameter.Value")'
+                // sh 'echo $rds_address'
+                // sh 'echo $redis_address'
+            
            
             withCredentials([usernamePassword(credentialsId: 'RDS_CRED', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                 //Run the docker image with 
-                sh "docker run -d -it -p 3000:3000 --env RDS_HOSTNAME=${rds_address} --env RDS_USERNAME=${USERNAME} --env RDS_PASSWORD=${PASSWORD} --env REDIS_HOSTNAME=${redis_address} --env RDS_PORT=3306 abdurrhmansm/node_app_rds:latest"
+                sh 'docker run -d -it -p 3000:3000 --env RDS_HOSTNAME=$(aws ssm get-parameter --name "rds_endpoint" --query "Parameter.Value") --env RDS_USERNAME=${USERNAME} --env RDS_PASSWORD=${PASSWORD} --env REDIS_HOSTNAME=$(aws ssm get-parameter --name "elasticahe-address" --query "Parameter.Value") --env RDS_PORT=3306 abdurrhmansm/node_app_rds:latest'
+            }
             }
             post {
                 success {
