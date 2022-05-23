@@ -25,17 +25,13 @@ Follow the infrastructure pipeline steps before running  this pipeline, You can 
 ### 1- Prequisites:
 - Make sure you have a Jenkins Slave EC2 instance online and running successfully
 - Add the credentials of  your dockerhub account and RDS instance of type (username and password)
-- Add to the Jenkinsfile the endpoints of both the RDS and ElastiCache
+- Add the credentials of iam user with a programmatic access with the name AWS_KEYS in Jenkins
 - Add a channel for slack in the Jenkinsfile
 To cojfigure slack in Jenkins follow the steps described in the Infrastructure repo: https://github.com/AbdurrhmanSabry/aws-architecture.git
-```bash
-environment {
-        rds_hostname = 'RSD_Endpoint'
-        redis_hostname    = 'REDIS_Endpoint'
-        }
-```
 
-### 2- Building  Pipeline
+
+### 2- Pipeline
+- Create a pipeline and choose pipeline script from scm => choose git => the link of this repo => choose main branch
 - Save and Build the pipeline
 
 - To check the result, hit one the following endpoint of the ALB we created using terraform 
