@@ -42,7 +42,7 @@ pipeline {
               --env RDS_HOSTNAME=${rds_hostname} \
               --env RDS_USERNAME=$(aws ssm get-parameter  --name "username_rds"  --output text  --query Parameter.Value) \
               --env RDS_PASSWORD=$(aws ssm get-parameter --name "password_rds" --with-decryption --output text --query Parameter.Value) \
-              --env REDIS_HOSTNAME=${redis_hostname}\
+              --env REDIS_HOSTNAME=${redis_hostname} \
               --env RDS_PORT=3306 abdurrhmansm/node_app_rds:latest
             '''
             }
