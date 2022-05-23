@@ -37,13 +37,14 @@ pipeline {
             steps {
             withAWS(credentials:'AWS_KEYS', region: 'us-east-1'){
                 //Run the docker image with 
-             sh """docker run -d -it -p 3000:3000 \
-              --env RDS_HOSTNAME=$(aws ssm get-parameter --name "rds_endpoint" --with-decryption --output text --query "Parameter.Value") \
-              --env RDS_USERNAME=$(aws ssm get-parameter  --name "username_rds"  --output text  --query Parameter.Value) \
-              --env RDS_PASSWORD=$(aws ssm get-parameter --name "password_rds" --with-decryption --output text --query Parameter.Value) \
-              --env REDIS_HOSTNAME=$(aws ssm get-parameter --name "elasticahe-address" --output text --with-decryption --query "Parameter.Value") \
+             sh '''
+             docker run -d -it -p 3000:3000
+              --env RDS_HOSTNAME=$(aws ssm get-parameter --name "rds_endpoint" --with-decryption --output text --query "Parameter.Value") 
+              --env RDS_USERNAME=$(aws ssm get-parameter  --name "username_rds"  --output text  --query Parameter.Value) 
+              --env RDS_PASSWORD=$(aws ssm get-parameter --name "password_rds" --with-decryption --output text --query Parameter.Value) 
+              --env REDIS_HOSTNAME=$(aws ssm get-parameter --name "elasticahe-address" --output text --with-decryption --query "Parameter.Value") 
               --env RDS_PORT=3306 abdurrhmansm/node_app_rds:latest
-            """
+            '''
             }
             
             }
