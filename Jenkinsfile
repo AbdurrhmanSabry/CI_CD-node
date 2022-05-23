@@ -35,6 +35,7 @@ pipeline {
             steps {
             withAWS(credentials:'AWS_KEYS', region: 'us-east-1'){
                 sh 'export rds_address=$(aws ssm get-parameter --name "rds_endpoint" --query "Parameter.Value")'
+                sh 'echo $rds_address'
             }
             withAWS(credentials: 'AWS_KEYS', region: 'us-east-1') {
                 sh 'terraform -chdir=./terraform fmt'
